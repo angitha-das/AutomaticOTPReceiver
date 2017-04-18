@@ -21,17 +21,24 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".OTPReceiver">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-            </intent-filter>
+        <receiver android:name=".EventOTPReceiver">
+        <intent-filter>
+        <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+        </intent-filter>
         </receiver>
+
+        <!--<receiver android:name=".OTPReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.provider.Telephony.SMS_RECEIVED"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <!--<receiver android:name=".SmsReceiver">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.provider.Telephony.SMS_RECEIVED"/>-->
             <!--</intent-filter>-->
         <!--</receiver>-->
+
     </application>
 
 </manifest>
