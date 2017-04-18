@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by angitha.das on 18-04-2017.
  */
 
 public class OTPReceiver extends BroadcastReceiver {
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
-
+    public Pattern p = Pattern.compile("(|^)\\d{6}\\."); //sms should contain exactly 6 digits followed by '.'
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("Intent recieved: " + intent.getAction());
@@ -26,7 +29,8 @@ public class OTPReceiver extends BroadcastReceiver {
                 for (int i = 0; i < pdus.length; i++) {
                     messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 }
-                if (messages.length > -1) {
+                String msg = messages[0].getMessageBody();
+                if (msg!=null) {
                     Toast.makeText(context, messages[0].getMessageBody(), Toast.LENGTH_SHORT).show();
                     System.out.println("Message recieved: " + messages[0].getMessageBody());
 //
@@ -36,7 +40,14 @@ public class OTPReceiver extends BroadcastReceiver {
 //                    context.sendBroadcast(intent_send);
 
                     MainActivity mainActivity = ((MyApplication) context.getApplicationContext()).mainActivity;
-                    mainActivity.editText.append(messages[0].getMessageBody());
+                        Matcher m = p.matcher(msg);
+                        if(m.find()) {
+                            mainActivity.editText.setText(m.group(0)+" Validated ");
+                        }
+                        else
+                        {
+                            mainActivity.editText.setText("Invalid otp");
+                        }
                 }
             }
         }
